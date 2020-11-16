@@ -7,7 +7,6 @@ const app = express(); //invoke express
 const multer = require("multer"); //use multer to upload blob data
 const upload = multer(); // set multer to be the upload variable (just like express, see above ( include it, then use it/set it up))
 const fs = require("fs"); //use the file system so we can save files
-const increment = require("add-filename-increment");
 const write = require("write");
 
 // Set up the server
