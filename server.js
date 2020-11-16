@@ -8,6 +8,7 @@ const multer = require("multer"); //use multer to upload blob data
 const upload = multer(); // set multer to be the upload variable (just like express, see above ( include it, then use it/set it up))
 const fs = require("fs"); //use the file system so we can save files
 const write = require("write");
+const uploads = require("./public/uploads.json");
 
 // Set up the server
 // process.env.PORT is related to deploying on heroku
@@ -29,6 +30,12 @@ app.post("/upload", upload.single("soundBlob"), function (req, res, next) {
   //  increment.file(uploadLocation, { fs: true });
   write.sync(uploadLocation, Buffer.from(new Uint8Array(req.file.buffer)), {
     flag: "a+",
+  });
+  uploads.push({"name": "audio (" + r + ").wav"});
+  write.sync("./public/uploads.json", JSON.stringify(uploads), (err) => {
+    if (err) throw err;
+
+    console.log("Done writing");
   });
 
   /*fs.writeFileSync(
