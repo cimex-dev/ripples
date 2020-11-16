@@ -9,13 +9,17 @@ function setup() {
   soundRec = new p5.SoundRecorder();
   soundRec.setInput(mic);
   soundFile = new p5.SoundFile();
+  getAudioContext().suspend();
+
+  cnv = createCanvas(windowWidth, windowHeight);
 
   button = createDiv("");
   button.position(100, 100);
-  button.size(windowWidth, windowHeight);
+  button.size(100, 100);
   button.style("background-color", "grey");
 
-  button.mouseClicked((mouseEvent) => {
+  cnv.mouseClicked((mouseEvent) => {
+    userStartAudio();
     console.log("recording....");
     soundRec.record(soundFile); // set up the soundfile to record and start recording
 
@@ -52,6 +56,16 @@ function setup() {
         }
       );
       console.log("recording stopped");
-    }, 1000); //record for ten  second(s)
+    }, 6000); //record for ten  second(s)
   }); // close mouseClicked handler
 } //close setup()
+
+function draw() {
+  background("black");
+}
+
+function canvasResized() {
+  resizeCanvas(windowWidth, windowHeight, [noRedraw]);
+}
+
+function textGlow() {}
