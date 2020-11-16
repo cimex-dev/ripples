@@ -44,6 +44,6 @@ app.post("/upload", upload.single("soundBlob"), function (req, res, next) {
 app.use(express.static("public"));
 
 //makes the app listen for requests on port 3000
-app.listen(8888, function () {
-  console.log("app listening on port 8888!");
+app.listen(3000, function () {
+  console.log("app listening on port 3000!");
 });
