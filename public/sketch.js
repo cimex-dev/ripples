@@ -69,5 +69,3 @@ function draw() {
 function canvasResized() {
   resizeCanvas(windowWidth, windowHeight, [noRedraw]);
 }
-
-function textGlow() {}
