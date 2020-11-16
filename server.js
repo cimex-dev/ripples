@@ -13,14 +13,14 @@ const write = require("write");
 // Set up the server
 // process.env.PORT is related to deploying on heroku
 
-// * var server = app.listen(process.env.PORT || 8888, listen);
+var server = app.listen(process.env.PORT || 5000, listen);
 
 // This call back just tells us that the server has started
-// function listen() {
-//   var host = server.address().address;
-//   var port = server.address().port;
-//   console.log('Application listening at http://' + host + ':' + port);
-// }
+function listen() {
+  var host = server.address().address;
+  var port = server.address().port;
+  console.log("Application listening at http://" + host + ":" + port);
+}
 
 app.post("/upload", upload.single("soundBlob"), function (req, res, next) {
   // console.log(req.file); // see what got uploaded
