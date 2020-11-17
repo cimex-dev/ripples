@@ -2,6 +2,7 @@ let button;
 let mic;
 let soundRec;
 let soundFile;
+let audioFiles;
 
 function setup() {
   mic = new p5.AudioIn();
@@ -10,6 +11,8 @@ function setup() {
   soundRec.setInput(mic);
   soundFile = new p5.SoundFile();
   getAudioContext().suspend();
+  let url = "/uploads.json";
+  audioFiles = loadJSON(url);
 
   cnv = createCanvas(windowWidth, windowHeight);
   cnv.mouseClicked(canvasPressed);
@@ -64,7 +67,10 @@ function draw() {
   fill("white");
   textAlign(CENTER);
   text("När pratade du senast med din granne?", width / 2, height / 2);
+  let audioNames = audioFiles.name[0];
 }
+
+console.log(audioFiles);
 
 function canvasResized() {
   resizeCanvas(windowWidth, windowHeight, [noRedraw]);
