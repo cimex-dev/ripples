@@ -7,20 +7,20 @@ const app = express(); //invoke express
 const multer = require("multer"); //use multer to upload blob data
 const upload = multer(); // set multer to be the upload variable (just like express, see above ( include it, then use it/set it up))
 const fs = require("fs"); //use the file system so we can save files
-const increment = require("add-filename-increment");
 const write = require("write");
+const uploads = require("./public/uploads.json");
 
 // Set up the server
 // process.env.PORT is related to deploying on heroku
 
-// * var server = app.listen(process.env.PORT || 8888, listen);
+var server = app.listen(process.env.PORT || 5000, listen);
 
 // This call back just tells us that the server has started
-// function listen() {
-//   var host = server.address().address;
-//   var port = server.address().port;
-//   console.log('Application listening at http://' + host + ':' + port);
-// }
+function listen() {
+  var host = server.address().address;
+  var port = server.address().port;
+  console.log("Application listening at http://" + host + ":" + port);
+}
 
 app.post("/upload", upload.single("soundBlob"), function (req, res, next) {
   // console.log(req.file); // see what got uploaded
@@ -28,8 +28,12 @@ app.post("/upload", upload.single("soundBlob"), function (req, res, next) {
   let r = Math.floor(Math.random() * 10000 + 1);
   let uploadLocation = __dirname + "/public/uploads/" + "audio (" + r + ").wav"; // where to save the file to. make sure the incoming name has a .wav extension
   //  increment.file(uploadLocation, { fs: true });
-  write.sync(uploadLocation, Buffer.from(new Uint8Array(req.file.buffer)), {
-    flag: "a+",
+  write(uploadLocation, Buffer.from(new Uint8Array(req.file.buffer)));
+  uploads.push({ name: "audio (" + r + ").wav" });
+  write("./public/uploads.json", JSON.stringify(uploads, null, 4), (err) => {
+    if (err) throw err;
+
+    console.log("Done writing to JSON.");
   });
 
   /*fs.writeFileSync(
@@ -44,6 +48,7 @@ app.post("/upload", upload.single("soundBlob"), function (req, res, next) {
 app.use(express.static("public"));
 
 //makes the app listen for requests on port 3000
-app.listen(8888, function () {
-  console.log("app listening on port 8888!");
+/*app.listen(3000, function () {
+  console.log("app listening on port 3000!");
 });
+*/

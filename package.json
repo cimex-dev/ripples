@@ -1,32 +1,27 @@
 {
-  "name": "audio-visualization",
+  "name": "ripples",
   "version": "1.0.0",
-  "description": "Visulaizing audio with p5.js",
+  "description": "* Install node.js LTS from [nodejs.org](https://nodejs.org/en/) * Open command prompt (`cmd`) inside `p5js-server` folder. * Execute command `npm install` to install dependancies. * Execute command `node server.js` to start local web server. * Then navigate to [http://localhost:3000](http://localhost:3000/)",
   "main": "server.js",
+  "dependencies": {
+    "multer": "^1.4.2",
+    "write": "^2.0.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nishanc/audio-visualization.git"
+    "url": "git+https://github.com/cimnex/ripples.git"
   },
-  "keywords": [
-    "p5.js",
-    "node",
-    "express",
-    "audio",
-    "visualization"
-  ],
-  "author": "Nishan Chathuranga Wickramarathna",
-  "license": "MIT",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nishanc/audio-visualization/issues"
+    "url": "https://github.com/cimnex/ripples/issues"
   },
-  "homepage": "https://github.com/nishanc/audio-visualization#readme",
-  "dependencies": {
-    "add-filename-increment": "^1.0.0",
-    "express": "^4.17.1",
-    "multer": "^1.4.2",
-    "write": "^2.0.0"
-  }
+  "homepage": "https://github.com/cimnex/ripples#readme"
 }
