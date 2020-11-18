@@ -3,6 +3,7 @@ let mic;
 let soundRec;
 let soundFile;
 let audioFiles;
+let mgr;
 
 function setup() {
   mic = new p5.AudioIn();
@@ -14,13 +15,137 @@ function setup() {
   let url = "/uploads.json";
   audioFiles = loadJSON(url);
 
-  cnv = createCanvas(windowWidth, windowHeight);
-  cnv.mouseClicked(canvasPressed);
+  createCanvas(windowWidth, windowHeight);
+
+  mgr = new SceneManager();
+  mgr.addScene(Intro);
+  mgr.addScene(SceneMain);
+
+  mgr.showNextScene();
 }
+
+function draw() {
+  mgr.draw();
+}
+
+function keyPressed() {
+  mgr.handleEvent("keyPressed");
+}
+
+function mousePressed() {
+  mgr.handleEvent("mousePressed");
+}
+
+function canvasResized() {
+  mgr.handleEvent("resizeCanvas");
+  resizeCanvas(windowWidth, windowHeight, [noRedraw]);
+}
+
 //  cnv.mouseClicked((mouseEvent) => {
+//
+//
+
+// =============================================================
+// =                         BEGIN SCENES                      =
+// =============================================================
+
+function Intro() {
+  let textX;
+  let textY;
+  let buttonOK;
+
+  this.setup = function () {
+    textX = width / 2;
+    textY = width / 2;
+
+    background("black");
+    textAlign(CENTER);
+
+    fill("white");
+    text(
+      "Den här sidan använder sig av röstdata, för att använda den måste du ge ditt samtycke till att ditt inspelade ljud används.\n\n All data raderas efter 24 timmar.",
+      width / 2,
+      height / 2
+    );
+
+    buttonOK = createButton("OK");
+    buttonOK.position(width / 2, height / 2 + 80);
+    buttonOK.mousePressed(this.nextScene);
+    buttonOK.style("background-color", "green");
+    buttonOK.style("width", "150px");
+    //buttonOK.style("position", "relative");
+    buttonOK.style("overflow", "hidden");
+    buttonOK.style("cursor", "pointer");
+    buttonOK.style("width", "150px");
+    buttonOK.style("width", "150px");
+    buttonOK.style("width", "150px");
+    buttonOK.style("width", "150px");
+    buttonOK.style("width", "150px");
+    buttonCircle = createDiv("circle");
+    buttonCircle.position(width / 2, height / 2 + 80);
+    //buttonOK.style("align-items", "center");
+
+    /*#button-3 {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#button-3 a {
+  position: relative;
+  transition: all .45s ease-Out;
+}
+
+#circle {
+  width: 0%;
+  height: 0%;
+  opacity: 0;
+  line-height: 40px;
+  border-radius: 50%;
+  background: #BFC0C0;
+  position: absolute;
+  transition: all .5s ease-Out;
+  top: 20px;
+  left: 70px;
+}
+
+#button-3:hover #circle {
+  width: 200%;
+  height: 500%;
+  opacity: 1;
+  top: -70px;
+  left: -70px;
+}
+
+#button-3:hover a {
+  color: #2D3142;
+}
+*/
+  };
+
+  this.draw = function () {};
+
+  this.nextScene = function () {
+    this.sceneManager.showNextScene();
+  };
+
+  this.keyPressed = function () {
+    if (keyCode === 32 || keyCode === ENTER) {
+      this.sceneManager.showNextScene();
+      removeElements();
+    }
+  };
+}
+
+function SceneMain() {
+  this.draw = function () {
+    background("gray");
+  };
+}
 
 function canvasPressed() {
-  userStartAudio();
+  //userStartAudio();
+
   console.log("recording....");
   soundRec.record(soundFile); // set up the soundfile to record and start recording
 
@@ -60,18 +185,3 @@ function canvasPressed() {
   }, 6000); //record for ten  second(s)
 } // close mouseClicked handler
 //close setup()
-
-function draw() {
-  background("black");
-  textSize(72);
-  fill("white");
-  textAlign(CENTER);
-  text("När pratade du senast med din granne?", width / 2, height / 2);
-  let audioNames = audioFiles.name[0];
-}
-
-console.log(audioFiles);
-
-function canvasResized() {
-  resizeCanvas(windowWidth, windowHeight, [noRedraw]);
-}
