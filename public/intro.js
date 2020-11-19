@@ -54,6 +54,7 @@ function Intro() {
       textX,
       textY
     );
+    text("Intro", textX, 20);
   };
 
   this.keyPressed = function () {
@@ -65,9 +66,17 @@ function Intro() {
 
   this.mousePressed = function () {
     userStartAudio();
-  };
+    soundRec.record(soundFile); // set up the soundfile to record and start recording
 
-  this.windowResized = function () {
-    resizeCanvas(windowWidth, windowHeight);
-  };
+    let recordingTimer = setTimeout(() => {
+      // setup a timeout for the recording, after the time below expires, do the tings inside the {}
+
+      soundRec.stop(); // stop recording
+      let soundBlob = soundFile.getBlob(); //get the recorded soundFile's blob & store it in a variable
+    }, 500); //record for ten  second(s)
+  }; // close mouseClicked handler
 }
+
+this.windowResized = function () {
+  resizeCanvas(windowWidth, windowHeight);
+};

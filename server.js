@@ -28,7 +28,12 @@ app.post("/upload", upload.single("soundBlob"), function (req, res, next) {
   let r = Math.floor(Math.random() * 10000 + 1);
   let uploadLocation = __dirname + "/public/uploads/" + "audio (" + r + ").wav"; // where to save the file to. make sure the incoming name has a .wav extension
   //  increment.file(uploadLocation, { fs: true });
-  write(uploadLocation, Buffer.from(new Uint8Array(req.file.buffer)));
+  write(uploadLocation, Buffer.from(new Uint8Array(req.file.buffer)), (err) => {
+    if (err) throw err;
+
+    console.log("Uploaded recording.");
+  });
+
   uploads.push({ name: "audio (" + r + ").wav" });
   write("./public/uploads.json", JSON.stringify(uploads, null, 4), (err) => {
     if (err) throw err;
@@ -36,11 +41,6 @@ app.post("/upload", upload.single("soundBlob"), function (req, res, next) {
     console.log("Done writing to JSON.");
   });
 
-  /*fs.writeFileSync(
-    uploadLocation,
-    Buffer.from(new Uint8Array(req.file.buffer))
-  );*/
-  // write the blob to the server as a file
   res.sendStatus(200); //send back that everything went ok
 });
 

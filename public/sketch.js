@@ -1,7 +1,7 @@
 let mic;
 let soundRec;
 let soundFile;
-let voiceFiles;
+let voiceFiles = [];
 let mgr;
 let cols;
 let colsBG;
@@ -11,8 +11,15 @@ let current;
 let previous;
 let level;
 let url;
+let voice;
+let voiceName;
+let randomVoice;
 
 let dampening = 0.99;
+
+function preLoad() {
+  loadSound("./uploads");
+}
 
 function setup() {
   mic = new p5.AudioIn();
@@ -23,7 +30,6 @@ function setup() {
   getAudioContext().suspend();
   url = "/uploads.json";
   voiceFiles = loadJSON(url, onFileLoad);
-  console.log(url);
   level = floor(mic.getLevel() * 1000);
 
   fill("255");
@@ -46,7 +52,16 @@ function setup() {
 }
 
 function onFileLoad() {
-  console.log("loaded successfully");
+  console.log("loaded Voices successfully");
+  randomVoice = random(0, voiceFiles.length);
+  voiceName = voiceFiles[0]["name"];
+  voice = loadSound("./uploads/" + voiceName);
+  var soundName = voiceFiles.entries;
+
+  var randomName = Object.values(soundName)[
+    Math.floor(Math.random() * soundName.length)
+  ];
+  console.log(randomName);
 }
 
 function draw() {
