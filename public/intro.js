@@ -1,7 +1,3 @@
-// =============================================================
-// =                         BEGIN INTRO                      =
-// =============================================================
-
 function Intro() {
   let textX;
   let textY;
@@ -66,6 +62,7 @@ function Intro() {
 
   this.mousePressed = function () {
     userStartAudio();
+
     soundRec.record(soundFile); // set up the soundfile to record and start recording
 
     let recordingTimer = setTimeout(() => {
@@ -75,8 +72,6 @@ function Intro() {
       let soundBlob = soundFile.getBlob(); //get the recorded soundFile's blob & store it in a variable
     }, 500); //record for ten  second(s)
   }; // close mouseClicked handler
-}
 
-this.windowResized = function () {
-  resizeCanvas(windowWidth, windowHeight);
-};
+
+}

@@ -3,22 +3,16 @@ let soundRec;
 let soundFile;
 let voiceFiles = [];
 let mgr;
-let cols;
 let colsBG;
-let rows;
 let rowsBG;
-let current;
-let previous;
 let level;
 let url;
 let voice;
 let voiceName;
 let randomVoice;
 
-let dampening = 0.99;
-
 function preLoad() {
-  loadSound("./uploads");
+  url = "/uploads.txt";
 }
 
 function setup() {
@@ -28,14 +22,15 @@ function setup() {
   soundRec.setInput(mic);
   soundFile = new p5.SoundFile();
   getAudioContext().suspend();
-  url = "/uploads.json";
-  voiceFiles = loadJSON(url, onFileLoad);
+
+
+  voiceFiles = loadJSON("/uploads.json", onFileLoad);
+
+
+
   level = floor(mic.getLevel() * 1000);
 
   fill("255");
-  //  rectMode(CENTER);
-
-  pixelDensity(1);
 
   cols = width;
   rows = height;
@@ -53,15 +48,10 @@ function setup() {
 
 function onFileLoad() {
   console.log("loaded Voices successfully");
-  randomVoice = random(0, voiceFiles.length);
-  voiceName = voiceFiles[0]["name"];
-  voice = loadSound("./uploads/" + voiceName);
-  var soundName = voiceFiles.entries;
-
-  var randomName = Object.values(soundName)[
-    Math.floor(Math.random() * soundName.length)
-  ];
-  console.log(randomName);
+//  randomVoice = random(result);
+  voiceName = randomVoice;
+  voice = createAudio("./uploads/" + voiceFiles[0]["name"], SceneMain.mousePressed);
+  console.log(voice);
 }
 
 function draw() {
@@ -74,6 +64,7 @@ function keyPressed() {
 
 function mousePressed() {
   mgr.handleEvent("mousePressed");
+  console.log(randomVoice);
 }
 function touchStarted() {
   mgr.handleEvent("touchStarted");

@@ -1,9 +1,22 @@
-function SceneMain() {
-  let textX = windowWidth / 2;
-  let textY = windowHeight / 2;
+// 2D Water Ripples
+// The Coding Train / Daniel Shiffman
+// https://thecodingtrain.com/CodingChallenges/102-2d-water-ripple.html
+// https://youtu.be/BZUdGqeOD0w
+// https://editor.p5js.org/codingtrain/sketches/tYXtzNSl
 
-  this.setup = function () {
-    pixelDensity(.5);
+// Algorithm: https://web.archive.org/web/20160418004149/http://freespace.virgin.net/hugo.elias/graphics/x_water.htm
+
+let cols;
+let rows;
+let current; // = new float[cols][rows];
+let previous; // = new float[cols][rows];
+
+let dampening = 0.99;
+
+function ripples() {
+
+  this.setup = function (){
+    pixelDensity(1);
     cols = width;
     rows = height;
     // The following line initializes a 2D cols-by-rows array with zeroes
@@ -11,10 +24,10 @@ function SceneMain() {
     // current = new float[cols][rows];
     current = new Array(cols).fill(0).map(n => new Array(rows).fill(0));
     previous = new Array(cols).fill(0).map(n => new Array(rows).fill(0));
-  };
+  }
 
-  this.draw = function () {
-    background("black");
+
+  this.drawRipples = function (){
     loadPixels();
     for (let i = 1; i < cols - 1; i++) {
       for (let j = 1; j < rows - 1; j++) {
@@ -41,29 +54,12 @@ function SceneMain() {
     previous = current;
     current = temp;
     console.log(level);
-    previous[mouseX][mouseY] = 500;
 
     if (level < width && level > 0) {
       let levelWidth = map(level, 0, width, 0, width);
       let levelHeight = map(level, 0, height, 0, height);
+      previous[mouseX][mouseY] = 500;
       console.log(mouseX);
-  };
-
-  push();
-  textAlign(LEFT, TOP);
-  text(
-    "Ripples\nAnojan Santhakumar & Sebastian Åhman\nKreativ Programmering HT20\nSödertörns Högskola",
-    10,
-    10
-  );
-  pop();
-  text("Main", textX, 20);
-
+  }
 }
-
-  this.mousePressed = function () {
-    userStartAudio();
-    //recorder();
-    voice.play();
-  };
 }
