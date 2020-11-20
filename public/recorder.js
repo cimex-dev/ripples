@@ -1,40 +1,38 @@
 function recorder() {
   console.log("recording....");
-  soundRec.record(soundFile); // set up the soundfile to record and start recording
+  soundRec.record(soundFile); // Sätt upp ljudfilen och börja spela in
 
   let recordingTimer = setTimeout(() => {
-    // setup a timeout for the recording, after the time below expires, do the tings inside the {}
+    // Timeout som efter 6 sekunder utför alla funktioner innanför {}
 
-    soundRec.stop(); // stop recording
-    let soundBlob = soundFile.getBlob(); //get the recorded soundFile's blob & store it in a variable
+    soundRec.stop(); // Stoppa inspelning
+    let soundBlob = soundFile.getBlob(); // Tar bloben för den inspelade ljudfilen och sätter in i variabel
 
-    let formdata = new FormData(); //create a from to of data to upload to the server
-    formdata.append("soundBlob", soundBlob, "audio.wav"); // append the sound blob and the name of the file. third argument will show up on the server as req.file.originalname
+    let formdata = new FormData(); // Skapar formulärdata som kan skickas upp mot servern
+    formdata.append("soundBlob", soundBlob, "audio.wav"); // Hämta in ljudfilen och sätt in den som formulärdata
 
-    // Now we can send the blob to a server...
-    var serverUrl = "/upload"; //we've made a POST endpoint on the server at /upload
-    //build a HTTP POST request
-    var httpRequestOptions = {
+    let serverUrl = "/upload"; // Skickar förfrågan till "/upload" i serverskriptet
+    // Bygg en förfrågan till HTTP POST
+    let httpRequestOptions = {
       method: "POST",
-      body: formdata, // with our form data packaged above
+      body: formdata, // Skickar formdatan som hämtats ovan
       headers: new Headers({
-        enctype: "multipart/form-data", // the enctype is important to work with multer on the server
+        enctype: "multipart/form-data", // Berättar för servern vad för data som skickas
       }),
     };
-    // console.log(httpRequestOptions);
-    // use p5 to make the POST request at our URL and with our options
+    // p5-funktion som skickar POST-förfrågan till vår angivna URL med inställningarna ovan
     httpDo(
       serverUrl,
       httpRequestOptions,
       (successStatusCode) => {
-        //if we were successful...
+        // Skriv ut meddelande om uppladdningen lyckades
         console.log("uploaded recording successfully: " + successStatusCode);
       },
       (error) => {
+        // Annars skriv ut felmeddelande
         console.error(error);
       }
     );
     console.log("recording stopped");
-  }, 6000); //record for ten  second(s)
-} // close mouseClicked handler
-//close setup()
+  }, 6000); // Spela in i 6 sekunder
+}

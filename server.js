@@ -1,54 +1,48 @@
 "use strict";
 
-const express = require("express"); //make express available
-// Create the app
-const app = express(); //invoke express
+const express = require("express"); // Se till att express laddas in
+const app = express(); // Starta express
+const multer = require("multer"); // Multer används för att ladda upp blobdata (.wav)
+const upload = multer(); // Sätt multer till att vara variabeln "upload"
+const fs = require("fs"); // Använd filsystemet för att kunna skriva filer.
+const write = require("write"); // En modul som utökar 'fs' funktioner
 
-const multer = require("multer"); //use multer to upload blob data
-const upload = multer(); // set multer to be the upload variable (just like express, see above ( include it, then use it/set it up))
-const fs = require("fs"); //use the file system so we can save files
-const write = require("write");
-const uploads = require("./public/uploads.json");
-
-// Set up the server
-// process.env.PORT is related to deploying on heroku
-
+// Sätt upp servern
+// process.env.PORT säger till Heroku att binda node till en port
 var server = app.listen(process.env.PORT || 5000, listen);
 
-// This call back just tells us that the server has started
+// Callback som meddelar att servern har startat
 function listen() {
   var host = server.address().address;
   var port = server.address().port;
   console.log("Application listening at http://" + host + ":" + port);
 }
 
+// Lyssnar efter att funktionen "recorder" ska skicka en förfrågan till "/upload"
 app.post("/upload", upload.single("soundBlob"), function (req, res, next) {
-  // console.log(req.file); // see what got uploaded
-  //let num = 0;
+  console.log(req.file); // Se vad som laddats upp
+
+  // Enkel variabel som slumpar ett värde mellan 1-10,000 i syfte att ha nog med namn så att de inte skriver över varandra
+  // Den här funktionen ville inte automatiskt inkrementera namnet utan skrev över en enda fil om och om igen, varför den istället bara slumpas ett värde som är stort nog för att göra risken att skriva över en existerande fil väldigt liten
   let r = Math.floor(Math.random() * 10000 + 1);
-  let uploadLocation = __dirname + "/public/uploads/" + "audio (" + r + ").wav"; // where to save the file to. make sure the incoming name has a .wav extension
-  //  increment.file(uploadLocation, { fs: true });
+  let uploadLocation = __dirname + "/public/uploads/" + "audio (" + r + ").wav"; // Var filen ska sparas, använder det slumpade värdet i filnamnet
+
+  // Skriver filen till platsen som angetts, använder sparad buffer från webbläsaren som data
   write(uploadLocation, Buffer.from(new Uint8Array(req.file.buffer)), (err) => {
     if (err) throw err;
 
     console.log("Uploaded recording.");
   });
 
-  uploads.push({ name: "audio (" + r + ").wav" });
+  // Lägger till en rad i "uploads.txt" med namnet på den nyskapade ljudfilen
   fs.appendFile("./public/uploads.txt", "audio (" + r + ").wav\n", (err) => {
     if (err) throw err;
 
-    console.log("Done writing to JSON.");
+    console.log("Done writing to textfile.");
   });
 
-  res.sendStatus(200); //send back that everything went ok
+  res.sendStatus(200); // Skicka ett meddelande om allt gått rätt
 });
 
-//serve out any static files in our public HTML folder
+// Håll mappen "public" öppen utåt.
 app.use(express.static("public"));
-
-//makes the app listen for requests on port 3000
-/*app.listen(3000, function () {
-  console.log("app listening on port 3000!");
-});
-*/
