@@ -73,6 +73,7 @@ function keyPressed() {
 
 function mousePressed() {
   mgr.handleEvent("mousePressed");
+  userStartAudio();
 }
 
 function mouseIsPressed() {
