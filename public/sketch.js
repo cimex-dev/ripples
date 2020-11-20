@@ -15,6 +15,7 @@ let voiceArray;
 let reverb;
 let amplitude;
 let bgNoise;
+let font;
 
 p5.disableFriendlyErrors = true;
 
@@ -22,6 +23,7 @@ function preload() {
   //url = "/uploads.txt";
   voiceArray = loadStrings("uploads.txt", onFileLoad);
   bgNoise = loadSound("./assets/space bass-002.mp3");
+  font = loadFont("./assets/XanhMono-Regular.ttf");
 }
 
 function setup() {

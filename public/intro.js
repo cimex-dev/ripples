@@ -23,6 +23,7 @@ function Intro() {
       buttonOK.color = "#15f709";
     };
     buttonOK.onRelease = function () {
+      recorder();
       mgr.showScene(SceneMain);
     };
 
@@ -45,11 +46,15 @@ function Intro() {
       10
     );
     pop();
+    push();
+    textFont(font);
+    textSize(18);
     text(
-      "Den här sidan använder sig av röstdata, för att använda den måste du ge ditt samtycke till att ditt inspelade ljud används.\n\n All data raderas efter 24 timmar.",
+      "Den här sidan använder sig av din röstdata, för att använda den måste du ge ditt samtycke till att ditt inspelade ljud används.\n\n All data raderas efter 24 timmar.",
       textX,
       textY
     );
+    pop();
     //text("Intro", textX, 20);
   };
 
@@ -62,7 +67,5 @@ function Intro() {
 
   this.mousePressed = function () {
     userStartAudio();
-    recorder2(); //get the recorded soundFile's blob & store it in a variable
-    //record for ten  second(s)
   }; // close mouseClicked handler
 }

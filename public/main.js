@@ -89,7 +89,11 @@ function SceneMain() {
       rect(width - x, height - 40, w, h);
     }
 
-    text("När pratade du senaste med din granne?", textX, textY);
+    push();
+    textSize(48);
+    textFont(font);
+    text("När pratade du senast med din granne?", textX, textY);
+    pop();
   };
 
   this.voiceActivate = function () {};
