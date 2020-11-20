@@ -35,7 +35,7 @@ app.post("/upload", upload.single("soundBlob"), function (req, res, next) {
   });
 
   uploads.push({ name: "audio (" + r + ").wav" });
-  write("./public/uploads.json", JSON.stringify(uploads, null, 4), (err) => {
+  fs.appendFile("./public/uploads.txt", "audio (" + r + ").wav\n", (err) => {
     if (err) throw err;
 
     console.log("Done writing to JSON.");

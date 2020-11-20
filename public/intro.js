@@ -50,7 +50,7 @@ function Intro() {
       textX,
       textY
     );
-    text("Intro", textX, 20);
+    //text("Intro", textX, 20);
   };
 
   this.keyPressed = function () {
@@ -72,6 +72,4 @@ function Intro() {
       let soundBlob = soundFile.getBlob(); //get the recorded soundFile's blob & store it in a variable
     }, 500); //record for ten  second(s)
   }; // close mouseClicked handler
-
-
 }

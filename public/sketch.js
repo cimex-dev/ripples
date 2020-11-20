@@ -10,9 +10,18 @@ let url;
 let voice;
 let voiceName;
 let randomVoice;
+let voiceObject;
+let voiceArray;
+let reverb;
+let amplitude;
+let bgNoise;
 
-function preLoad() {
-  url = "/uploads.txt";
+p5.disableFriendlyErrors = true;
+
+function preload() {
+  //url = "/uploads.txt";
+  voiceArray = loadStrings("uploads.txt", onFileLoad);
+  bgNoise = loadSound("./assets/space bass-002.mp3");
 }
 
 function setup() {
@@ -23,13 +32,7 @@ function setup() {
   soundFile = new p5.SoundFile();
   getAudioContext().suspend();
 
-
-  voiceFiles = loadJSON("/uploads.json", onFileLoad);
-
-
-
-  level = floor(mic.getLevel() * 1000);
-
+  //bgNoise.loop();
   fill("255");
 
   cols = width;
@@ -48,10 +51,16 @@ function setup() {
 
 function onFileLoad() {
   console.log("loaded Voices successfully");
-//  randomVoice = random(result);
-  voiceName = randomVoice;
-  voice = createAudio("./uploads/" + voiceFiles[0]["name"], SceneMain.mousePressed);
-  console.log(voice);
+  voiceArray.splice(-1, 1);
+
+  for (i = 0; i < 2; i++) {
+    randomVoice = floor(random(voiceArray.length));
+    voiceFiles[i] = loadSound(
+      "./uploads/" + voiceArray[randomVoice],
+      SceneMain.mousePressed
+    );
+  }
+  console.log(voiceFiles);
 }
 
 function draw() {
@@ -64,8 +73,12 @@ function keyPressed() {
 
 function mousePressed() {
   mgr.handleEvent("mousePressed");
-  console.log(randomVoice);
 }
+
+function mouseIsPressed() {
+  mgr.handleEvent("mouseIsPressed");
+}
+
 function touchStarted() {
   mgr.handleEvent("touchStarted");
 }

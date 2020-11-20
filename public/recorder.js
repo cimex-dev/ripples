@@ -1,6 +1,4 @@
 function recorder() {
-  userStartAudio();
-
   console.log("recording....");
   soundRec.record(soundFile); // set up the soundfile to record and start recording
 
