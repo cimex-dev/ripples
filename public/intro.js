@@ -1,51 +1,44 @@
 function Intro() {
-  let textX;
-  let textY;
-  let buttonNO;
+  // Deklarerar variabler som bara används i Intro
   let buttonOK;
 
   this.setup = function () {
     createCanvas(windowWidth, windowHeight);
-    textX = windowWidth / 2;
-    textY = windowHeight / 2;
 
     fill(255);
     textAlign(CENTER);
 
+    // Skapar ny knapp, ger den position samt text
     buttonOK = new Clickable();
-    buttonOK.locate(textX - 100, textY + 50);
+    buttonOK.locate(textX - 50, textY + 50);
     buttonOK.text = "OK";
 
+    //Knappens färg när muspekaren inte är över den
     buttonOK.onOutside = function () {
       buttonOK.color = "white";
     };
+    //Knappens färg när muspekaren är över den
     buttonOK.onHover = function () {
       buttonOK.color = "#15f709";
     };
+    // Om användaren klickat och släppt musknapp, kör recorder() en gång för att initialisera den
+    // Gå sedan till nästa scen
     buttonOK.onRelease = function () {
       recorder();
       mgr.showScene(SceneMain);
     };
-
-    buttonNO = new Clickable();
-    buttonNO.locate(textX + 50, textY + 50);
   };
 
   this.draw = function () {
     background(0);
 
-    buttonOK.draw();
-    buttonNO.draw();
+    buttonOK.draw(); // Rita upp knappen
     fill(255);
 
-    push();
-    textAlign(LEFT, TOP);
-    text(
-      "Ripples\nAnojan Santhakumar & Sebastian Åhman\nKreativ Programmering HT20\nSödertörns Högskola",
-      10,
-      10
-    );
-    pop();
+    // Information om sidan
+    infoText();
+
+    // Text som ber om användarens medgivande för att använda deras data
     push();
     textFont(font);
     textSize(18);
@@ -55,17 +48,12 @@ function Intro() {
       textY
     );
     pop();
-    //text("Intro", textX, 20);
   };
 
+  // Tillåter "space" och "enter" för att visa nästa scen
   this.keyPressed = function () {
     if (keyCode === 32 || keyCode === ENTER) {
       mgr.showScene(SceneMain);
-      removeElements();
     }
   };
-
-  this.mousePressed = function () {
-    userStartAudio();
-  }; // close mouseClicked handler
 }

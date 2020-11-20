@@ -1,32 +1,31 @@
+// Skapar globala variabler som används igenom programmet
 let mic;
 let soundRec;
 let soundFile;
 let voiceFiles = [];
 let mgr;
-let colsBG;
-let rowsBG;
 let level;
-let url;
 let voice;
 let voiceName;
 let randomVoice;
-let voiceObject;
 let voiceArray;
 let reverb;
 let amplitude;
-let bgNoise;
 let font;
+let textX;
+let textY;
 
 p5.disableFriendlyErrors = true;
 
 function preload() {
-  //url = "/uploads.txt";
+  // Laddar in en array med namnen på inspelade ljudfiler
+  // Callback som startar funktionen onFileLoad() vilken laddar in ljudfilerna
   voiceArray = loadStrings("uploads.txt", onFileLoad);
-  bgNoise = loadSound("./assets/space bass-002.mp3");
-  font = loadFont("./assets/XanhMono-Regular.ttf");
+  font = loadFont("./assets/XanhMono-Regular.ttf"); // Laddar in typsnitt
 }
 
 function setup() {
+  // Startar olika ljudfunktioner
   mic = new p5.AudioIn();
   mic.start();
   soundRec = new p5.SoundRecorder();
@@ -34,58 +33,70 @@ function setup() {
   soundFile = new p5.SoundFile();
   getAudioContext().suspend();
 
-  //bgNoise.loop();
+  textX = windowWidth / 2;
+  textY = windowHeight / 2;
+
   fill("255");
 
-  cols = width;
-  rows = height;
-  colsBG = windowWidth;
-  rowsBG = windowHeight;
-
-  current = new Array(cols).fill(0).map((n) => new Array(rows).fill(0));
-  previous = new Array(cols).fill(0).map((n) => new Array(rows).fill(0));
-
+  // Startar SceneManager och skapar scener
   mgr = new SceneManager();
   mgr.addScene(Intro);
   mgr.addScene(SceneMain);
-  mgr.showNextScene();
+  mgr.showNextScene(); // Går direkt till den första scenen
 }
 
 function onFileLoad() {
   console.log("loaded Voices successfully");
-  voiceArray.splice(-1, 1);
+
+  voiceArray.splice(-1, 1); // Tar bort den sista raden i arrayen eftersom den är tom
 
   for (i = 0; i < 2; i++) {
-    randomVoice = floor(random(voiceArray.length));
+    // Loopar igenom arrayen och väljer två värden
+    randomVoice = floor(random(voiceArray.length)); // Slumpar ett värde från hela arrayen
+    // Laddar två stycken slumpade filer och har en callback som ser till att de
+    // skickas till Main
     voiceFiles[i] = loadSound(
       "./uploads/" + voiceArray[randomVoice],
-      SceneMain.mousePressed
+      SceneMain.mousePressed + SceneMain.keyPressed
     );
+    voiceFiles[i].setVolume(0.5); //Sänk volymen på uppspelade ljudfiler
   }
-  console.log(voiceFiles);
+  console.log(voiceFiles); // Visar vilka av filerna som har laddats in
 }
 
 function draw() {
-  mgr.draw();
+  mgr.draw(); // Binder draw till scenemanager
 }
 
 function keyPressed() {
-  mgr.handleEvent("keyPressed");
+  mgr.handleEvent("keyPressed"); // Binder keyPressed till scenemanager
 }
 
 function mousePressed() {
-  mgr.handleEvent("mousePressed");
-  userStartAudio();
+  mgr.handleEvent("mousePressed"); // Binder mousePressed till scenemanager
+  userStartAudio(); // Startar ljud på interaktion
 }
 
 function mouseIsPressed() {
-  mgr.handleEvent("mouseIsPressed");
+  mgr.handleEvent("mouseIsPressed"); // Binder mouseIsPressed till scenemanager
 }
 
 function touchStarted() {
-  mgr.handleEvent("touchStarted");
+  mgr.handleEvent("touchStarted"); // Binder touchStarted till scenemanager
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  resizeCanvas(windowWidth, windowHeight); // Funktion för att ändra canvas storlek om användaren byter fönsterstorlek
+}
+
+// Funktion för att enkelt visa infotexten
+function infoText() {
+  push();
+  textAlign(LEFT, TOP);
+  text(
+    "Ripples\nAnojan Santhakumar & Sebastian Åhman\nKreativ Programmering HT20\nSödertörns Högskola\nhttps://github.com/cimnex/ripples",
+    10,
+    10
+  );
+  pop();
 }
