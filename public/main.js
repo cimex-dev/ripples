@@ -47,14 +47,7 @@ function SceneMain() {
     buttonRec.draw();
     pop();
 
-    push();
-    textAlign(LEFT, TOP);
-    text(
-      "Ripples\nAnojan Santhakumar & Sebastian Åhman\nKreativ Programmering HT20\nSödertörns Högskola",
-      10,
-      10
-    );
-    pop();
+    infoText();
 
     //Hämtar ljudnivå på mic och stoppar in i variabel
     level = amplitude.getLevel() / 5;
